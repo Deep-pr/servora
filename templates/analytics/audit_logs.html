@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Audit Logs | Servora{% endblock %}
+{% block content %}
+<section class="page-header"><div class="container"><h1>Audit Logs</h1><p>Recent authenticated mutating actions recorded without request bodies or secret values.</p></div></section>
+<section class="section-band"><div class="container"><div class="table-responsive table-shell">
+  <table class="table align-middle mb-0">
+    <thead><tr><th>Actor</th><th>Action</th><th>Target</th><th>Status</th><th>IP</th><th>Time</th></tr></thead>
+    <tbody>
+      {% for log in logs %}
+        <tr><td>{{ log.actor|default:"System" }}</td><td>{{ log.action }}</td><td>{{ log.target_model }}</td><td>{{ log.metadata.status_code }}</td><td>{{ log.ip_address|default:"-" }}</td><td>{{ log.created_at|date:"M d, Y h:i A" }}</td></tr>
+      {% empty %}
+        <tr><td colspan="6"><div class="empty-state">No audit logs yet.</div></td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div></div></section>
+{% endblock %}

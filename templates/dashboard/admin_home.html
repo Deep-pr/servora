@@ -12,6 +12,8 @@
   <canvas id="bookingChart" class="mt-4"></canvas>
   <div class="dashboard-actions mt-4">
     <a class="btn btn-primary" href="/admin/">Open Django Admin</a>
+    <a class="btn btn-outline-primary" href="{% url 'analytics:dashboard' %}">Analytics</a>
+    <a class="btn btn-outline-primary" href="{% url 'analytics:audit_logs' %}">Audit Logs</a>
     <a class="btn btn-outline-primary" href="{% url 'services:category_manage' %}">Manage Categories</a>
   </div>
 </div></section>

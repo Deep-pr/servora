@@ -20,6 +20,7 @@ urlpatterns = [
     path('complaints/', include('complaints.urls')),
     path('notifications/', include('notifications.urls')),
     path('messages/', include('messaging.urls')),
+    path('analytics/', include('analytics.urls')),
     path('accounts/', include('accounts.urls')),
     path('admin/', admin.site.urls),
 ]

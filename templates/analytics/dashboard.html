@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Analytics | Servora{% endblock %}
+{% block content %}
+<section class="page-header"><div class="container"><h1>Analytics Dashboard</h1><p>Platform metrics, demand trends, provider performance, and operational signals.</p></div></section>
+<section class="section-band"><div class="container">
+  <div class="row g-3">
+    <div class="col-md-3"><div class="stat-card"><span>{{ metrics.total_users }}</span><small>Total users</small></div></div>
+    <div class="col-md-3"><div class="stat-card"><span>{{ metrics.total_providers }}</span><small>Total providers</small></div></div>
+    <div class="col-md-3"><div class="stat-card"><span>{{ metrics.verified_providers }}</span><small>Verified providers</small></div></div>
+    <div class="col-md-3"><div class="stat-card"><span>{{ metrics.total_bookings }}</span><small>Total bookings</small></div></div>
+    <div class="col-md-3"><div class="stat-card"><span>{{ metrics.completed_bookings }}</span><small>Completed bookings</small></div></div>
+    <div class="col-md-3"><div class="stat-card"><span>{{ metrics.cancelled_bookings }}</span><small>Cancelled bookings</small></div></div>
+    <div class="col-md-3"><div class="stat-card"><span>{{ metrics.active_bookings }}</span><small>Active bookings</small></div></div>
+    <div class="col-md-3"><div class="stat-card"><span>{{ metrics.open_complaints }}</span><small>Open complaints</small></div></div>
+  </div>
+
+  <div class="row g-4 mt-3">
+    <div class="col-lg-6"><div class="chart-card"><h2>Monthly Booking Trends</h2><canvas class="analytics-chart" data-chart-type="line" data-labels='{{ charts.booking_trends.labels|safe }}' data-values='{{ charts.booking_trends.values|safe }}'></canvas></div></div>
+    <div class="col-lg-6"><div class="chart-card"><h2>User Growth</h2><canvas class="analytics-chart" data-chart-type="line" data-labels='{{ charts.user_growth.labels|safe }}' data-values='{{ charts.user_growth.values|safe }}'></canvas></div></div>
+    <div class="col-lg-6"><div class="chart-card"><h2>Service Popularity</h2><canvas class="analytics-chart" data-chart-type="bar" data-labels='{{ charts.service_popularity.labels|safe }}' data-values='{{ charts.service_popularity.values|safe }}'></canvas></div></div>
+    <div class="col-lg-6"><div class="chart-card"><h2>Booking Status</h2><canvas class="analytics-chart" data-chart-type="doughnut" data-labels='{{ charts.booking_status.labels|safe }}' data-values='{{ charts.booking_status.values|safe }}'></canvas></div></div>
+    <div class="col-lg-6"><div class="chart-card"><h2>Peak Booking Hours</h2><canvas class="analytics-chart" data-chart-type="bar" data-labels='{{ charts.peak_hours.labels|safe }}' data-values='{{ charts.peak_hours.values|safe }}'></canvas></div></div>
+    <div class="col-lg-6"><div class="chart-card"><h2>Popular Locations</h2><canvas class="analytics-chart" data-chart-type="bar" data-labels='{{ charts.locations.labels|safe }}' data-values='{{ charts.locations.values|safe }}'></canvas></div></div>
+  </div>
+
+  <div class="provider-card mt-4">
+    <h2>Data Insights</h2>
+    <div class="row g-3">
+      <div class="col-md-4"><strong>Most requested service</strong><p class="mb-0">{{ insights.most_requested_service }}</p></div>
+      <div class="col-md-4"><strong>Cancellation trend</strong><p class="mb-0">{{ insights.cancellation_rate }}% of bookings</p></div>
+      <div class="col-md-4"><strong>Top provider</strong><p class="mb-0">{{ insights.top_provider }}</p></div>
+    </div>
+  </div>
+</div></section>
+{% endblock %}

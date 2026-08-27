@@ -62,6 +62,15 @@ Part 6 includes:
 - Notifications triggered by bookings, quotes, reviews, complaints, and messages
 - Tests for reviews, favorites, complaints, notifications, and messaging
 
+Part 7 includes:
+- Staff-only analytics dashboard
+- Chart.js datasets for booking trends, user growth, service popularity, status distribution, peak hours, and locations
+- Data insights for most requested services, cancellation trends, and top provider performance
+- Audit log page for recent authenticated mutating actions
+- Audit middleware that stores action metadata without request bodies or sensitive values
+- Additional secure cookie, referrer policy, and header settings
+- Analytics tests and final project test pass
+
 ## Tech Stack
 
 - Python
@@ -129,6 +138,45 @@ For quick development, the default settings fall back to SQLite when no PostgreS
 
 To use PostgreSQL locally, copy `.env.example` to `.env` after creating the database and update the password before running migrations.
 
+## Useful Pages
+
+- Home: `http://127.0.0.1:8000/`
+- Admin: `http://127.0.0.1:8000/admin/`
+- Provider search: `http://127.0.0.1:8000/providers/`
+- Dashboard: `http://127.0.0.1:8000/dashboard/`
+- Staff analytics: `http://127.0.0.1:8000/analytics/`
+- Staff audit logs: `http://127.0.0.1:8000/analytics/audit-logs/`
+
+## Security Notes
+
+- Secrets and database credentials belong in `.env`, never directly in source code.
+- `.env`, SQLite database files, media uploads, static build output, and Python caches are ignored by Git.
+- Django authentication, password hashing, CSRF middleware, XSS-aware templates, ORM query building, role checks, and staff-only decorators are used throughout the project.
+- Verification documents are not shown on public provider profiles.
+- Payment records store status and gateway references only. Card numbers, CVV values, banking passwords, and raw payment credentials must never be stored.
+- Audit logging records authenticated mutating actions, status codes, and IP address metadata without request bodies.
+
+## Deployment Notes
+
+Before deployment:
+
+```env
+DJANGO_DEBUG=False
+DJANGO_SECRET_KEY=use-a-long-random-secret
+DJANGO_ALLOWED_HOSTS=your-domain.com,www.your-domain.com
+DB_ENGINE=django.db.backends.postgresql
+```
+
+Then run:
+
+```bash
+python manage.py migrate
+python manage.py collectstatic
+python manage.py createsuperuser
+```
+
+Use a production WSGI/ASGI server, configure HTTPS, set secure proxy headers at the hosting layer, and store media files in a private or access-controlled location when documents are sensitive.
+
 ## GitHub Upload Guide
 
 1. Create a new repository on GitHub named `servora`.
@@ -160,4 +208,4 @@ Part 5: Booking lifecycle and quote workflow. Complete.
 
 Part 6: Reviews, favorites, complaints, notifications, and messaging. Complete.
 
-Part 7: Admin analytics, charts, audit logs, security hardening, tests, and deployment notes.
+Part 7: Admin analytics, charts, audit logs, security hardening, tests, and deployment notes. Complete.

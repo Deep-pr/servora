@@ -37,4 +37,25 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  document.querySelectorAll('.analytics-chart').forEach((canvas) => {
+    if (!window.Chart) return;
+    const labels = JSON.parse(canvas.dataset.labels.replaceAll("'", '"'));
+    const values = JSON.parse(canvas.dataset.values);
+    new Chart(canvas, {
+      type: canvas.dataset.chartType,
+      data: {
+        labels,
+        datasets: [{
+          label: 'Total',
+          data: values,
+          borderColor: '#1267d8',
+          backgroundColor: ['#1267d8', '#ffc247', '#21a67a', '#ef5b5b', '#6b7cff', '#16a3b8', '#8b5cf6', '#f97316'],
+          tension: .35,
+          fill: canvas.dataset.chartType === 'line'
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: true }
+    });
+  });
 });
