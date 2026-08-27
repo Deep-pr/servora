@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block title %}Delete Service | Servora{% endblock %}
+{% block content %}
+<section class="page-header"><div class="container"><h1>Delete Service</h1><p>{{ provider_service.title }}</p></div></section>
+<section class="section-band"><div class="container"><div class="profile-shell"><form method="post">{% csrf_token %}<p>Remove this service from your provider profile?</p><button class="btn btn-danger">Delete</button> <a class="btn btn-outline-secondary" href="{% url 'providers:my_services' %}">Cancel</a></form></div></div></section>
+{% endblock %}

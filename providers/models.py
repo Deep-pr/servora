@@ -65,9 +65,20 @@ class ProviderService(models.Model):
 
 
 class VerificationDocument(models.Model):
+    PENDING = 'pending'
+    APPROVED = 'approved'
+    REJECTED = 'rejected'
+    STATUS_CHOICES = (
+        (PENDING, 'Pending'),
+        (APPROVED, 'Approved'),
+        (REJECTED, 'Rejected'),
+    )
+
     provider = models.ForeignKey(ProviderProfile, on_delete=models.CASCADE, related_name='verification_documents')
     document_type = models.CharField(max_length=80)
     document = models.FileField(upload_to='verification/private/')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=PENDING, db_index=True)
+    review_notes = models.TextField(blank=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     reviewed_at = models.DateTimeField(null=True, blank=True)
 

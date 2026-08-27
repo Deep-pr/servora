@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }} | Servora{% endblock %}
+{% block content %}
+<section class="page-header"><div class="container"><h1>{{ title }}</h1><p>Categories power search, filtering, and provider listings.</p></div></section>
+<section class="section-band"><div class="container"><div class="profile-shell"><form method="post">{% csrf_token %}{{ form.as_p }}<button class="btn btn-primary">Save Category</button> <a class="btn btn-outline-secondary" href="{% url 'services:category_manage' %}">Cancel</a></form></div></div></section>
+{% endblock %}

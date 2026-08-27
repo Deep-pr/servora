@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block title %}Delete Category | Servora{% endblock %}
+{% block content %}
+<section class="page-header"><div class="container"><h1>Delete Category</h1><p>{{ category.name }}</p></div></section>
+<section class="section-band"><div class="container"><div class="profile-shell"><form method="post">{% csrf_token %}<p>Remove this category from Servora?</p><button class="btn btn-danger">Delete</button> <a class="btn btn-outline-secondary" href="{% url 'services:category_manage' %}">Cancel</a></form></div></div></section>
+{% endblock %}

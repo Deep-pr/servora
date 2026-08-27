@@ -1,8 +1,12 @@
 from django.db.models import Q
-from django.shortcuts import get_object_or_404, render
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
+from django.shortcuts import get_object_or_404, redirect, render
 
 from services.models import ServiceCategory
-from .models import ProviderProfile
+from .forms import ProviderServiceForm, VerificationDocumentForm
+from .models import ProviderProfile, ProviderService
 
 
 def provider_search(request):
@@ -48,4 +52,70 @@ def provider_profile(request, pk):
     )
     return render(request, 'public/provider_profile.html', {'provider': provider})
 
-# Create your views here.
+
+def _current_provider(user):
+    if not user.is_authenticated or not user.is_provider():
+        raise PermissionDenied
+    return get_object_or_404(ProviderProfile, user=user)
+
+
+@login_required
+def my_services(request):
+    provider = _current_provider(request.user)
+    services = provider.services.select_related('category')
+    return render(request, 'providers/my_services.html', {'provider': provider, 'services': services})
+
+
+@login_required
+def service_create(request):
+    provider = _current_provider(request.user)
+    form = ProviderServiceForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        provider_service = form.save(commit=False)
+        provider_service.provider = provider
+        provider_service.save()
+        messages.success(request, 'Service added successfully.')
+        return redirect('providers:my_services')
+    return render(request, 'providers/service_form.html', {'form': form, 'title': 'Add Service'})
+
+
+@login_required
+def service_update(request, pk):
+    provider = _current_provider(request.user)
+    provider_service = get_object_or_404(ProviderService, pk=pk, provider=provider)
+    form = ProviderServiceForm(request.POST or None, instance=provider_service)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        messages.success(request, 'Service updated successfully.')
+        return redirect('providers:my_services')
+    return render(request, 'providers/service_form.html', {'form': form, 'title': 'Edit Service'})
+
+
+@login_required
+def service_delete(request, pk):
+    provider = _current_provider(request.user)
+    provider_service = get_object_or_404(ProviderService, pk=pk, provider=provider)
+    if request.method == 'POST':
+        provider_service.delete()
+        messages.success(request, 'Service removed successfully.')
+        return redirect('providers:my_services')
+    return render(request, 'providers/service_confirm_delete.html', {'provider_service': provider_service})
+
+
+@login_required
+def verification(request):
+    provider = _current_provider(request.user)
+    form = VerificationDocumentForm(request.POST or None, request.FILES or None)
+    if request.method == 'POST' and form.is_valid():
+        document = form.save(commit=False)
+        document.provider = provider
+        document.save()
+        provider.verification_status = ProviderProfile.PENDING
+        provider.save(update_fields=['verification_status'])
+        messages.success(request, 'Document uploaded for admin review.')
+        return redirect('providers:verification')
+    return render(request, 'providers/verification.html', {
+        'provider': provider,
+        'form': form,
+        'documents': provider.verification_documents.all(),
+    })

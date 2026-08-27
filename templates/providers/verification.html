@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Verification | Servora{% endblock %}
+{% block content %}
+<section class="page-header"><div class="container"><h1>Provider Verification</h1><p>Upload documents for admin review. Documents are stored outside public provider pages.</p></div></section>
+<section class="section-band">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-5">
+        <div class="profile-shell">
+          <h2>Upload Document</h2>
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn btn-primary">Submit for Review</button>
+          </form>
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <div class="table-responsive table-shell">
+          <table class="table align-middle mb-0">
+            <thead><tr><th>Type</th><th>Status</th><th>Uploaded</th><th>Notes</th></tr></thead>
+            <tbody>
+              {% for document in documents %}
+                <tr><td>{{ document.document_type }}</td><td><span class="badge text-bg-secondary">{{ document.get_status_display }}</span></td><td>{{ document.uploaded_at|date:"M d, Y" }}</td><td>{{ document.review_notes|default:"-" }}</td></tr>
+              {% empty %}
+                <tr><td colspan="4"><div class="empty-state">No verification documents uploaded yet.</div></td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <p class="text-muted small mt-3">Only approved providers receive the verified badge on public pages.</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

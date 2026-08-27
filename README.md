@@ -27,6 +27,14 @@ Part 2 includes:
 - Django admin registration for major models
 - Basic registration and dashboard access tests
 
+Part 3 includes:
+- Provider service add/edit/delete workflow
+- Provider verification document upload workflow
+- File type and size validation for verification documents
+- Admin-only service category create/edit/delete workflow
+- Dashboard links for provider onboarding and category management
+- Tests for service management, verification upload, and category permissions
+
 ## Tech Stack
 
 - Python
@@ -117,7 +125,7 @@ Part 1: Project scaffold, roles, core models, public UI, seed data.
 
 Part 2: Registration flows for customer/provider, role dashboards, profile forms. Complete.
 
-Part 3: Service category management, provider services, verification upload workflow.
+Part 3: Service category management, provider services, verification upload workflow. Complete.
 
 Part 4: Advanced provider search with filters, pagination, and map markers.
 

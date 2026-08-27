@@ -24,6 +24,8 @@
   {% endif %}
   <div class="dashboard-actions mt-4">
     <a class="btn btn-primary" href="{% url 'accounts:profile' %}">Edit Provider Profile</a>
+    <a class="btn btn-outline-primary" href="{% url 'providers:my_services' %}">Manage Services</a>
+    <a class="btn btn-outline-primary" href="{% url 'providers:verification' %}">Verification</a>
     {% if provider and provider.is_verified %}<a class="btn btn-outline-primary" href="{% url 'providers:profile' provider.pk %}">View Public Profile</a>{% endif %}
   </div>
 </div></section>

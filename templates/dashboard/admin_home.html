@@ -10,6 +10,9 @@
     <div class="col-md-3"><div class="stat-card"><span>{{ bookings_count }}</span><small>Total bookings</small></div></div>
   </div>
   <canvas id="bookingChart" class="mt-4"></canvas>
-  <a class="btn btn-primary mt-4" href="/admin/">Open Django Admin</a>
+  <div class="dashboard-actions mt-4">
+    <a class="btn btn-primary" href="/admin/">Open Django Admin</a>
+    <a class="btn btn-outline-primary" href="{% url 'services:category_manage' %}">Manage Categories</a>
+  </div>
 </div></section>
 {% endblock %}
