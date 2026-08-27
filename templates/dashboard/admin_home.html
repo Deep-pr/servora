@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard | Servora{% endblock %}
+{% block content %}
+<section class="page-header"><div class="container"><h1>Admin Dashboard</h1><p>Monitor users, providers, bookings, verification, complaints, analytics, and audit logs.</p></div></section>
+<section class="section-band"><div class="container">
+  <div class="row g-3">
+    <div class="col-md-3"><div class="stat-card"><span>{{ users_count }}</span><small>Total users</small></div></div>
+    <div class="col-md-3"><div class="stat-card"><span>{{ providers_count }}</span><small>Total providers</small></div></div>
+    <div class="col-md-3"><div class="stat-card"><span>{{ verified_count }}</span><small>Verified providers</small></div></div>
+    <div class="col-md-3"><div class="stat-card"><span>{{ bookings_count }}</span><small>Total bookings</small></div></div>
+  </div>
+  <canvas id="bookingChart" class="mt-4"></canvas>
+  <a class="btn btn-primary mt-4" href="/admin/">Open Django Admin</a>
+</div></section>
+{% endblock %}

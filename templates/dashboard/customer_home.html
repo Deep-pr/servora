@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Customer Dashboard | Servora{% endblock %}
+{% block content %}
+<section class="page-header"><div class="container"><h1>Customer Dashboard</h1><p>Track bookings, quotations, favorites, notifications, and reviews.</p></div></section>
+<section class="section-band"><div class="container">
+  <div class="row g-3">
+    <div class="col-md-3"><div class="stat-card"><span>{{ upcoming_count }}</span><small>Upcoming</small></div></div>
+    <div class="col-md-3"><div class="stat-card"><span>{{ completed_count }}</span><small>Completed</small></div></div>
+    <div class="col-md-3"><div class="stat-card"><span>{{ cancelled_count }}</span><small>Cancelled</small></div></div>
+    <div class="col-md-3"><div class="stat-card"><span>{{ favorites_count }}</span><small>Favorites</small></div></div>
+  </div>
+  <div class="dashboard-actions mt-4">
+    <a class="btn btn-primary" href="{% url 'providers:search' %}">Find Providers</a>
+    <a class="btn btn-outline-primary" href="{% url 'accounts:profile' %}">Edit Profile</a>
+  </div>
+</div></section>
+{% endblock %}

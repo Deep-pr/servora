@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Provider Dashboard | Servora{% endblock %}
+{% block content %}
+<section class="page-header"><div class="container"><h1>Provider Dashboard</h1><p>Manage service requests, availability, earnings, reviews, and trust score.</p></div></section>
+<section class="section-band"><div class="container">
+  {% if provider %}
+    <div class="row g-3">
+      <div class="col-md-3"><div class="stat-card"><span>{{ pending_count }}</span><small>Pending requests</small></div></div>
+      <div class="col-md-3"><div class="stat-card"><span>{{ completed_count }}</span><small>Completed jobs</small></div></div>
+      <div class="col-md-3"><div class="stat-card"><span>{{ cancelled_count }}</span><small>Cancelled jobs</small></div></div>
+      <div class="col-md-3"><div class="stat-card"><span>{{ provider.trust_score }}</span><small>Trust score</small></div></div>
+    </div>
+    <div class="provider-card mt-4">
+      <div class="d-flex justify-content-between flex-wrap gap-3">
+        <div>
+          <h2>{{ provider.business_name }}</h2>
+          <p class="text-muted mb-0">{{ provider.base_location }} · {{ provider.service_area }}</p>
+        </div>
+        <span class="badge text-bg-warning align-self-start">{{ provider.get_verification_status_display }}</span>
+      </div>
+    </div>
+  {% else %}
+    <div class="empty-state">No provider profile found. Update your profile to start onboarding.</div>
+  {% endif %}
+  <div class="dashboard-actions mt-4">
+    <a class="btn btn-primary" href="{% url 'accounts:profile' %}">Edit Provider Profile</a>
+    {% if provider and provider.is_verified %}<a class="btn btn-outline-primary" href="{% url 'providers:profile' provider.pk %}">View Public Profile</a>{% endif %}
+  </div>
+</div></section>
+{% endblock %}

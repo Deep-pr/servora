@@ -19,6 +19,14 @@ Part 1 includes:
 - Chart.js dashboard placeholder
 - Demo seed command with 12 categories and 20 providers
 
+Part 2 includes:
+- Separate customer and provider registration flows
+- Automatic customer/provider profile creation
+- Role-aware dashboards for customer, provider, and admin users
+- Editable customer and provider profile forms
+- Django admin registration for major models
+- Basic registration and dashboard access tests
+
 ## Tech Stack
 
 - Python
@@ -107,7 +115,7 @@ Replace `YOUR_USERNAME` with your GitHub username.
 
 Part 1: Project scaffold, roles, core models, public UI, seed data.
 
-Part 2: Registration flows for customer/provider, role dashboards, profile forms.
+Part 2: Registration flows for customer/provider, role dashboards, profile forms. Complete.
 
 Part 3: Service category management, provider services, verification upload workflow.
 

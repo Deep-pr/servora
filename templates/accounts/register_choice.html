@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Join Servora{% endblock %}
+{% block content %}
+<section class="page-header">
+  <div class="container">
+    <h1>Join Servora</h1>
+    <p>Create the right account for how you want to use the platform.</p>
+  </div>
+</section>
+<section class="section-band">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="provider-card">
+          <h2>Customer</h2>
+          <p>Search nearby professionals, request quotations, book services, save favorites, and review completed work.</p>
+          <a class="btn btn-primary" href="{% url 'accounts:customer_register' %}">Register as Customer</a>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="provider-card">
+          <h2>Service Provider</h2>
+          <p>Create a professional profile, list services, set your service area, and submit verification for admin approval.</p>
+          <a class="btn btn-warning" href="{% url 'accounts:provider_register' %}">Register as Provider</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

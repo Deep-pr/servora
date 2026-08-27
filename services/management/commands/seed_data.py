@@ -6,6 +6,7 @@ from django.utils.text import slugify
 
 from providers.models import ProviderProfile, ProviderService
 from services.models import ServiceCategory
+from accounts.models import CustomerProfile
 
 
 class Command(BaseCommand):
@@ -80,4 +81,8 @@ class Command(BaseCommand):
         )
         customer.set_password('Customer@123')
         customer.save()
+        CustomerProfile.objects.get_or_create(
+            user=customer,
+            defaults={'city': 'Tinsukia', 'address': 'AT Road, Tinsukia'},
+        )
         self.stdout.write(self.style.SUCCESS('Seeded categories, 20 providers, and demo users.'))
