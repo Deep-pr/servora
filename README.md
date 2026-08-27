@@ -43,6 +43,15 @@ Part 4 includes:
 - Demo provider coordinates around Tinsukia
 - Search tests for filtering and distance sorting
 
+Part 5 includes:
+- Customer booking request workflow from provider profiles
+- Customer and provider booking list pages
+- Booking detail page with lifecycle status visibility
+- Provider actions for accepting, rejecting, confirming, starting, completing, rescheduling, and disputing bookings
+- Provider quote creation and customer quote accept/reject flow
+- Demo bookings and quotes in seed data
+- Tests for booking creation, status updates, and quote acceptance
+
 ## Tech Stack
 
 - Python
@@ -137,7 +146,7 @@ Part 3: Service category management, provider services, verification upload work
 
 Part 4: Advanced provider search with filters, pagination, and map markers. Complete.
 
-Part 5: Booking lifecycle and quote workflow.
+Part 5: Booking lifecycle and quote workflow. Complete.
 
 Part 6: Reviews, favorites, complaints, notifications, and messaging.
 

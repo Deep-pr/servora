@@ -2,8 +2,10 @@ from decimal import Decimal
 
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
+from django.utils import timezone
 from django.utils.text import slugify
 
+from bookings.models import Booking, Quote
 from providers.models import ProviderProfile, ProviderService
 from services.models import ServiceCategory
 from accounts.models import CustomerProfile
@@ -102,4 +104,30 @@ class Command(BaseCommand):
             user=customer,
             defaults={'city': 'Tinsukia', 'address': 'AT Road, Tinsukia'},
         )
+        demo_services = ProviderService.objects.select_related('provider')[:6]
+        for index, service in enumerate(demo_services):
+            booking, _ = Booking.objects.get_or_create(
+                customer=customer,
+                provider=service.provider,
+                provider_service=service,
+                defaults={
+                    'scheduled_for': timezone.now() + timezone.timedelta(days=index + 1),
+                    'address': 'AT Road, Tinsukia',
+                    'problem_description': f'Demo booking for {service.title}.',
+                    'contact_preference': 'phone',
+                    'status': Booking.CONFIRMED if index % 2 == 0 else Booking.PENDING,
+                    'estimated_amount': service.starting_price,
+                },
+            )
+            Quote.objects.get_or_create(
+                booking=booking,
+                provider=service.provider,
+                defaults={
+                    'estimated_price': service.starting_price + Decimal('150.00'),
+                    'service_description': f'Inspection and service for {service.title}.',
+                    'expected_completion_time': 'Same day',
+                    'notes': 'Final amount may vary after inspection.',
+                    'expires_at': timezone.now() + timezone.timedelta(days=2),
+                },
+            )
         self.stdout.write(self.style.SUCCESS('Seeded categories, 20 providers, and demo users.'))

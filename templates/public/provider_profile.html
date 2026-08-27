@@ -5,7 +5,12 @@
   <div class="container">
     <div class="d-flex flex-wrap justify-content-between align-items-end gap-3">
       <div><span class="badge text-bg-success mb-2">Verified Provider</span><h1>{{ provider.business_name }}</h1><p>{{ provider.base_location }} · {{ provider.service_area }}</p></div>
-      <div class="d-flex gap-2 flex-wrap"><button class="btn btn-warning">Book Now</button><button class="btn btn-light">Request Quote</button><button class="btn btn-outline-light">Chat</button><button class="btn btn-outline-light">Save</button></div>
+      <div class="d-flex gap-2 flex-wrap">
+        <a class="btn btn-warning" href="{% url 'bookings:create' provider.pk %}">Book Now</a>
+        <a class="btn btn-light" href="{% url 'bookings:create' provider.pk %}">Request Quote</a>
+        <button class="btn btn-outline-light">Chat</button>
+        <button class="btn btn-outline-light">Save</button>
+      </div>
     </div>
   </div>
 </section>

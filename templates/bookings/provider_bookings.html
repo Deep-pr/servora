@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Booking Requests | Servora{% endblock %}
+{% block content %}
+<section class="page-header"><div class="container"><h1>Booking Requests</h1><p>Accept, reject, update status, and send quotations to customers.</p></div></section>
+<section class="section-band"><div class="container">
+  <div class="table-responsive table-shell">
+    <table class="table align-middle mb-0">
+      <thead><tr><th>Service</th><th>Customer</th><th>Date</th><th>Status</th><th>Amount</th><th></th></tr></thead>
+      <tbody>
+        {% for booking in bookings %}
+          <tr>
+            <td>{{ booking.provider_service.title }}</td>
+            <td>{{ booking.customer.username }}</td>
+            <td>{{ booking.scheduled_for|date:"M d, Y h:i A" }}</td>
+            <td><span class="badge text-bg-secondary">{{ booking.get_status_display }}</span></td>
+            <td>Rs. {{ booking.estimated_amount|default:"-" }}</td>
+            <td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{% url 'bookings:detail' booking.pk %}">Manage</a></td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="6"><div class="empty-state">No booking requests yet.</div></td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div></section>
+{% endblock %}

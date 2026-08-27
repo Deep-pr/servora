@@ -150,6 +150,15 @@ body {
   padding: 16px;
 }
 
+.quote-row {
+  padding: 16px 0;
+  border-bottom: 1px solid #e7edf5;
+}
+
+.quote-row:last-child {
+  border-bottom: 0;
+}
+
 @media (max-width: 767px) {
   .hero-section { padding: 64px 0; }
   .display-4 { font-size: 2.3rem; }

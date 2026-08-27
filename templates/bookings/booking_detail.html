@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %}Booking Details | Servora{% endblock %}
+{% block content %}
+<section class="page-header">
+  <div class="container d-flex justify-content-between align-items-end gap-3 flex-wrap">
+    <div>
+      <h1>{{ booking.provider_service.title }}</h1>
+      <p>{{ booking.provider.business_name }} · {{ booking.scheduled_for|date:"M d, Y h:i A" }}</p>
+    </div>
+    <span class="badge text-bg-warning fs-6">{{ booking.get_status_display }}</span>
+  </div>
+</section>
+<section class="section-band"><div class="container"><div class="row g-4">
+  <div class="col-lg-7">
+    <div class="provider-card">
+      <h2>Booking Information</h2>
+      <p><strong>Customer:</strong> {{ booking.customer.username }}</p>
+      <p><strong>Provider:</strong> {{ booking.provider.business_name }}</p>
+      <p><strong>Address:</strong> {{ booking.address }}</p>
+      <p><strong>Problem:</strong> {{ booking.problem_description }}</p>
+      <p><strong>Contact preference:</strong> {{ booking.contact_preference }}</p>
+      <p><strong>Estimated amount:</strong> Rs. {{ booking.estimated_amount|default:"-" }}</p>
+    </div>
+
+    <div class="provider-card mt-4">
+      <h2>Quotes</h2>
+      {% for quote in booking.quotes.all %}
+        <div class="quote-row">
+          <div class="d-flex justify-content-between gap-3 flex-wrap">
+            <strong>Rs. {{ quote.estimated_price }}</strong>
+            <span class="badge text-bg-secondary">{{ quote.get_status_display }}</span>
+          </div>
+          <p class="mb-1">{{ quote.service_description }}</p>
+          <p class="text-muted small mb-2">Completion: {{ quote.expected_completion_time }} · Expires {{ quote.expires_at|date:"M d, Y h:i A" }}</p>
+          {% if quote.notes %}<p class="small">{{ quote.notes }}</p>{% endif %}
+          {% if user == booking.customer and quote.status == 'pending' %}
+            <form class="d-inline" method="post" action="{% url 'bookings:quote_decision' quote.pk 'accepted' %}">{% csrf_token %}<button class="btn btn-sm btn-success">Accept Quote</button></form>
+            <form class="d-inline" method="post" action="{% url 'bookings:quote_decision' quote.pk 'rejected' %}">{% csrf_token %}<button class="btn btn-sm btn-outline-danger">Reject Quote</button></form>
+          {% endif %}
+        </div>
+      {% empty %}
+        <div class="empty-state">No quotes yet.</div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="col-lg-5">
+    {% if user == booking.customer %}
+      <div class="provider-card">
+        <h2>Customer Actions</h2>
+        {% if can_cancel %}
+          <form method="post" action="{% url 'bookings:cancel' booking.pk %}">{% csrf_token %}<button class="btn btn-outline-danger">Cancel Booking</button></form>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if user == booking.provider.user %}
+      <div class="provider-card">
+        <h2>Provider Actions</h2>
+        <div class="d-flex gap-2 flex-wrap">
+          {% for status,label in booking_actions %}
+            <form method="post" action="{% url 'bookings:provider_update_status' booking.pk status %}">{% csrf_token %}<button class="btn btn-sm btn-outline-primary">{{ label }}</button></form>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="provider-card mt-4">
+        <h2>Send Quote</h2>
+        <form method="post" action="{% url 'bookings:quote_create' booking.pk %}">
+          {% csrf_token %}
+          {{ quote_form.as_p }}
+          <button class="btn btn-primary">Send Quote</button>
+        </form>
+      </div>
+    {% endif %}
+  </div>
+</div></div></section>
+{% endblock %}
