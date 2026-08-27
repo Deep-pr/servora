@@ -43,6 +43,18 @@ class Command(BaseCommand):
             'SafeWire Services', 'AquaRoot Plumbers', 'GearBox Garage', 'FrostPoint AC',
             'TechNest Support', 'PhoneRescue', 'ScholarPoint', 'CleanSwift',
         ]
+        coordinates = [
+            (Decimal('27.488600'), Decimal('95.355800')), (Decimal('27.492000'), Decimal('95.346500')),
+            (Decimal('27.481500'), Decimal('95.364000')), (Decimal('27.500400'), Decimal('95.352000')),
+            (Decimal('27.474900'), Decimal('95.358200')), (Decimal('27.496800'), Decimal('95.371100')),
+            (Decimal('27.486100'), Decimal('95.337900')), (Decimal('27.509000'), Decimal('95.362600')),
+            (Decimal('27.469800'), Decimal('95.347200')), (Decimal('27.503200'), Decimal('95.382500')),
+            (Decimal('27.477700'), Decimal('95.374700')), (Decimal('27.515100'), Decimal('95.351200')),
+            (Decimal('27.490700'), Decimal('95.390000')), (Decimal('27.461900'), Decimal('95.360200')),
+            (Decimal('27.521300'), Decimal('95.369400')), (Decimal('27.484400'), Decimal('95.326700')),
+            (Decimal('27.472800'), Decimal('95.387600')), (Decimal('27.508600'), Decimal('95.333300')),
+            (Decimal('27.456700'), Decimal('95.342200')), (Decimal('27.518800'), Decimal('95.392200')),
+        ]
         for index, business_name in enumerate(names):
             user, _ = User.objects.get_or_create(
                 username=f'provider{index + 1}',
@@ -59,6 +71,8 @@ class Command(BaseCommand):
                     'experience_years': 2 + (index % 12),
                     'service_area': 'Tinsukia and nearby areas',
                     'base_location': 'Tinsukia',
+                    'latitude': coordinates[index][0],
+                    'longitude': coordinates[index][1],
                     'verification_status': ProviderProfile.APPROVED,
                     'emergency_available': index % 3 == 0,
                     'response_rate': 75 + (index % 20),
@@ -68,6 +82,9 @@ class Command(BaseCommand):
                     'trust_score': min(98, 72 + index),
                 },
             )
+            provider.latitude = coordinates[index][0]
+            provider.longitude = coordinates[index][1]
+            provider.save(update_fields=['latitude', 'longitude'])
             ProviderService.objects.get_or_create(
                 provider=provider,
                 category=category,

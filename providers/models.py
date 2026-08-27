@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.urls import reverse
 
 from services.models import ServiceCategory
 
@@ -46,6 +47,9 @@ class ProviderProfile(models.Model):
     @property
     def is_verified(self):
         return self.verification_status == self.APPROVED
+
+    def get_public_url(self):
+        return reverse('providers:profile', kwargs={'pk': self.pk})
 
 
 class ProviderService(models.Model):

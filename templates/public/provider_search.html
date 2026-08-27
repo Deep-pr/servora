@@ -4,27 +4,82 @@
 <section class="page-header"><div class="container"><h1>Find Nearby Providers</h1><p>Search by service, city, rating, price, experience, and verified status.</p></div></section>
 <section class="section-band">
   <div class="container">
-    <form class="row g-2 filter-bar mb-4">
-      <div class="col-md-4"><input class="form-control" name="q" value="{{ query }}" placeholder="Service or provider"></div>
-      <div class="col-md-3"><input class="form-control" name="location" value="{{ location }}" placeholder="Location"></div>
-      <div class="col-md-3">
-        <select class="form-select" name="sort">
-          <option value="recommended">Recommended</option>
-          <option value="highest_rated" {% if sort == 'highest_rated' %}selected{% endif %}>Highest rated</option>
-          <option value="lowest_price" {% if sort == 'lowest_price' %}selected{% endif %}>Lowest price</option>
-          <option value="most_experienced" {% if sort == 'most_experienced' %}selected{% endif %}>Most experienced</option>
-        </select>
+    <form class="filter-panel mb-4">
+      <div class="row g-3">
+        <div class="col-lg-3"><label>Service or provider</label><input class="form-control" name="q" value="{{ query }}" placeholder="Electrician"></div>
+        <div class="col-lg-3"><label>Location</label><input class="form-control" name="location" value="{{ location }}" placeholder="Tinsukia"></div>
+        <div class="col-lg-2">
+          <label>Category</label>
+          <select class="form-select" name="category">
+            <option value="">Any category</option>
+            {% for category in categories %}
+              <option value="{{ category.pk }}" {% if filters.category == category.pk|stringformat:"s" %}selected{% endif %}>{{ category.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-lg-2"><label>Minimum rating</label><input class="form-control" type="number" step="0.1" min="0" max="5" name="min_rating" value="{{ filters.min_rating }}" placeholder="4.0"></div>
+        <div class="col-lg-2"><label>Max price</label><input class="form-control" type="number" min="0" name="max_price" value="{{ filters.max_price }}" placeholder="500"></div>
+        <div class="col-lg-2"><label>Experience</label><input class="form-control" type="number" min="0" name="min_experience" value="{{ filters.min_experience }}" placeholder="3"></div>
+        <div class="col-lg-2"><label>Radius km</label><input class="form-control" type="number" min="1" name="radius" value="{{ filters.radius }}" placeholder="10"></div>
+        <div class="col-lg-2"><label>Latitude</label><input class="form-control" type="number" step="0.000001" name="lat" value="{{ filters.lat }}" placeholder="27.4886"></div>
+        <div class="col-lg-2"><label>Longitude</label><input class="form-control" type="number" step="0.000001" name="lng" value="{{ filters.lng }}" placeholder="95.3558"></div>
+        <div class="col-lg-2">
+          <label>Sort by</label>
+          <select class="form-select" name="sort">
+            <option value="recommended">Recommended</option>
+            <option value="highest_rated" {% if sort == 'highest_rated' %}selected{% endif %}>Highest rated</option>
+            <option value="lowest_price" {% if sort == 'lowest_price' %}selected{% endif %}>Lowest price</option>
+            <option value="nearest" {% if sort == 'nearest' %}selected{% endif %}>Nearest</option>
+            <option value="most_experienced" {% if sort == 'most_experienced' %}selected{% endif %}>Most experienced</option>
+          </select>
+        </div>
+        <div class="col-lg-2 d-flex align-items-end">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="emergency" id="emergencyFilter" {% if filters.emergency %}checked{% endif %}>
+            <label class="form-check-label" for="emergencyFilter">Emergency</label>
+          </div>
+        </div>
+        <div class="col-lg-2 d-grid align-items-end"><button class="btn btn-primary">Search</button></div>
       </div>
-      <div class="col-md-2 d-grid"><button class="btn btn-primary">Search</button></div>
     </form>
     <div id="provider-map" class="map-panel mb-4"></div>
+    {{ map_markers|json_script:"provider-markers" }}
     <div class="row g-4">
       {% for provider in providers %}
-        <div class="col-md-6 col-lg-4"><div class="provider-card"><div class="d-flex justify-content-between"><h5>{{ provider.business_name }}</h5><span class="badge text-bg-success">Verified</span></div><p class="text-muted small">{{ provider.base_location }} · {{ provider.experience_years }} years · Rating {{ provider.average_rating }}</p><p>{{ provider.bio|truncatechars:120 }}</p><a href="{% url 'providers:profile' provider.pk %}" class="btn btn-outline-primary btn-sm">Open profile</a></div></div>
+        <div class="col-md-6 col-lg-4">
+          <div class="provider-card">
+            <div class="d-flex justify-content-between gap-2">
+              <h5>{{ provider.business_name }}</h5>
+              <span class="badge text-bg-success">Verified</span>
+            </div>
+            <p class="text-muted small">
+              {{ provider.base_location }} · {{ provider.experience_years }} years · Rating {{ provider.average_rating }}
+              {% if provider.distance_km is not None %} · {{ provider.distance_km }} km{% endif %}
+            </p>
+            <p>{{ provider.bio|truncatechars:120 }}</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="small text-muted">From Rs. {{ provider.lowest_price|default:"-" }}</span>
+              <a href="{% url 'providers:profile' provider.pk %}" class="btn btn-outline-primary btn-sm">Open profile</a>
+            </div>
+          </div>
+        </div>
       {% empty %}
         <div class="empty-state">No providers match your filters yet.</div>
       {% endfor %}
     </div>
+    {% if page_obj.paginator.num_pages > 1 %}
+      <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+          {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?{{ query_params }}&page={{ page_obj.previous_page_number }}">Previous</a></li>
+          {% endif %}
+          <li class="page-item disabled"><span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
+          {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?{{ query_params }}&page={{ page_obj.next_page_number }}">Next</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+    {% endif %}
   </div>
 </section>
 {% endblock %}

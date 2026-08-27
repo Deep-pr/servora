@@ -35,6 +35,14 @@ Part 3 includes:
 - Dashboard links for provider onboarding and category management
 - Tests for service management, verification upload, and category permissions
 
+Part 4 includes:
+- Advanced provider search filters for category, rating, price, experience, emergency availability, and location text
+- Radius filtering and nearest sorting when latitude/longitude are supplied
+- Paginated provider results
+- Leaflet map markers generated from provider coordinates
+- Demo provider coordinates around Tinsukia
+- Search tests for filtering and distance sorting
+
 ## Tech Stack
 
 - Python
@@ -127,7 +135,7 @@ Part 2: Registration flows for customer/provider, role dashboards, profile forms
 
 Part 3: Service category management, provider services, verification upload workflow. Complete.
 
-Part 4: Advanced provider search with filters, pagination, and map markers.
+Part 4: Advanced provider search with filters, pagination, and map markers. Complete.
 
 Part 5: Booking lifecycle and quote workflow.
 
