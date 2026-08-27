@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Provider Search | Servora{% endblock %}
+{% block content %}
+<section class="page-header"><div class="container"><h1>Find Nearby Providers</h1><p>Search by service, city, rating, price, experience, and verified status.</p></div></section>
+<section class="section-band">
+  <div class="container">
+    <form class="row g-2 filter-bar mb-4">
+      <div class="col-md-4"><input class="form-control" name="q" value="{{ query }}" placeholder="Service or provider"></div>
+      <div class="col-md-3"><input class="form-control" name="location" value="{{ location }}" placeholder="Location"></div>
+      <div class="col-md-3">
+        <select class="form-select" name="sort">
+          <option value="recommended">Recommended</option>
+          <option value="highest_rated" {% if sort == 'highest_rated' %}selected{% endif %}>Highest rated</option>
+          <option value="lowest_price" {% if sort == 'lowest_price' %}selected{% endif %}>Lowest price</option>
+          <option value="most_experienced" {% if sort == 'most_experienced' %}selected{% endif %}>Most experienced</option>
+        </select>
+      </div>
+      <div class="col-md-2 d-grid"><button class="btn btn-primary">Search</button></div>
+    </form>
+    <div id="provider-map" class="map-panel mb-4"></div>
+    <div class="row g-4">
+      {% for provider in providers %}
+        <div class="col-md-6 col-lg-4"><div class="provider-card"><div class="d-flex justify-content-between"><h5>{{ provider.business_name }}</h5><span class="badge text-bg-success">Verified</span></div><p class="text-muted small">{{ provider.base_location }} · {{ provider.experience_years }} years · Rating {{ provider.average_rating }}</p><p>{{ provider.bio|truncatechars:120 }}</p><a href="{% url 'providers:profile' provider.pk %}" class="btn btn-outline-primary btn-sm">Open profile</a></div></div>
+      {% empty %}
+        <div class="empty-state">No providers match your filters yet.</div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

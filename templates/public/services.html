@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Services | Servora{% endblock %}
+{% block content %}
+<section class="page-header"><div class="container"><h1>Services</h1><p>Browse trusted local service categories.</p></div></section>
+<section class="section-band"><div class="container"><div class="row g-3">
+{% for category in categories %}
+  <div class="col-md-4"><a class="service-card" href="{{ category.get_absolute_url }}"><strong>{{ category.name }}</strong><small>{{ category.description }}</small></a></div>
+{% empty %}
+  <div class="empty-state">No categories yet. Run the seed command.</div>
+{% endfor %}
+</div></div></section>
+{% endblock %}

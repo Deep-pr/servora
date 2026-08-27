@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}{{ provider.business_name }} | Servora{% endblock %}
+{% block content %}
+<section class="page-header">
+  <div class="container">
+    <div class="d-flex flex-wrap justify-content-between align-items-end gap-3">
+      <div><span class="badge text-bg-success mb-2">Verified Provider</span><h1>{{ provider.business_name }}</h1><p>{{ provider.base_location }} · {{ provider.service_area }}</p></div>
+      <div class="d-flex gap-2 flex-wrap"><button class="btn btn-warning">Book Now</button><button class="btn btn-light">Request Quote</button><button class="btn btn-outline-light">Chat</button><button class="btn btn-outline-light">Save</button></div>
+    </div>
+  </div>
+</section>
+<section class="section-band"><div class="container"><div class="row g-4">
+  <div class="col-lg-8">
+    <h2>About</h2><p>{{ provider.bio }}</p>
+    <h3 class="mt-4">Services & Pricing</h3>
+    <div class="list-group">{% for service in provider.services.all %}<div class="list-group-item d-flex justify-content-between"><span>{{ service.title }}</span><strong>Rs. {{ service.starting_price }}</strong></div>{% endfor %}</div>
+  </div>
+  <div class="col-lg-4"><div class="provider-card"><h3>Trust Score: {{ provider.trust_score }}/100</h3><p class="text-muted small">This score is an indicator based on ratings, completed jobs, verification, response rate, cancellation rate, reviews, and activity. It does not guarantee service quality.</p><hr><p><strong>Rating:</strong> {{ provider.average_rating }}</p><p><strong>Completed jobs:</strong> {{ provider.completed_jobs }}</p><p><strong>Response rate:</strong> {{ provider.response_rate }}%</p><p><strong>Cancellation rate:</strong> {{ provider.cancellation_rate }}%</p><p><strong>Emergency:</strong> {% if provider.emergency_available %}Available{% else %}Not available{% endif %}</p></div></div>
+</div></div></section>
+{% endblock %}

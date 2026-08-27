@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}Servora | Trusted Services Near You{% endblock %}
+{% block content %}
+<section class="hero-section">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-7">
+        <span class="badge text-bg-light mb-3">Trusted Services. Right Near You.</span>
+        <h1 class="display-4 fw-bold">Find Trusted Local Professionals Near You</h1>
+        <p class="lead text-white-75">Compare verified providers, request quotes, book jobs, and track every service from one polished dashboard.</p>
+        <form class="search-panel row g-2 mt-4" action="{% url 'providers:search' %}">
+          <div class="col-md-5"><input class="form-control form-control-lg" name="q" placeholder="What service do you need?"></div>
+          <div class="col-md-5"><input class="form-control form-control-lg" name="location" placeholder="Enter your location"></div>
+          <div class="col-md-2 d-grid"><button class="btn btn-warning btn-lg">Search</button></div>
+        </form>
+      </div>
+      <div class="col-lg-5">
+        <div class="hero-card">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <strong>Platform Snapshot</strong>
+            <span class="badge text-bg-success">Verified</span>
+          </div>
+          <div class="metric-grid">
+            <div><span>12</span><small>Categories</small></div>
+            <div><span>24/7</span><small>Emergency</small></div>
+            <div><span>92</span><small>Trust Score</small></div>
+            <div><span>10 km</span><small>Radius</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section-band">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-end mb-4">
+      <div><h2 class="section-title">Popular Services</h2><p class="text-muted mb-0">Start with the most requested local services.</p></div>
+      <a href="{% url 'services:list' %}" class="btn btn-outline-primary btn-sm">View all</a>
+    </div>
+    <div class="row g-3">
+      {% for category in categories %}
+        <div class="col-6 col-lg-3">
+          <a class="service-card" href="{{ category.get_absolute_url }}">
+            <span>{{ category.icon|default:'SRV' }}</span>
+            <strong>{{ category.name }}</strong>
+            <small>{{ category.description|truncatechars:70 }}</small>
+          </a>
+        </div>
+      {% empty %}
+        <div class="col-12"><div class="empty-state">Run <code>python manage.py seed_data</code> to load demo services.</div></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+<section class="section-band bg-light">
+  <div class="container">
+    <h2 class="section-title">Top Rated Professionals</h2>
+    <div class="row g-4 mt-1">
+      {% for provider in providers %}
+        <div class="col-md-6 col-lg-4">
+          <div class="provider-card">
+            <div class="d-flex justify-content-between"><h5>{{ provider.business_name }}</h5><span class="badge text-bg-primary">Trust {{ provider.trust_score }}</span></div>
+            <p class="text-muted small mb-2">{{ provider.base_location }} · {{ provider.experience_years }} years</p>
+            <p>{{ provider.bio|truncatechars:110 }}</p>
+            <a class="btn btn-outline-primary btn-sm" href="{% url 'providers:profile' provider.pk %}">View profile</a>
+          </div>
+        </div>
+      {% empty %}
+        <div class="col-12"><div class="empty-state">Verified providers will appear here after seeding or admin approval.</div></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+<section class="section-band">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4"><h3>How Servora Works</h3><p>Search, compare, request a quote or book, then review after completion.</p></div>
+      <div class="col-md-4"><h3>Why Choose Servora</h3><p>Verification workflow, trust scoring, maps, reviews, and audit-ready data.</p></div>
+      <div class="col-md-4"><h3>Become a Provider</h3><p>Create a profile, upload verification documents privately, set services, and accept local bookings.</p></div>
+    </div>
+  </div>
+</section>
+{% endblock %}

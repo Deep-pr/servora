@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard | Servora{% endblock %}
+{% block content %}
+<section class="page-header"><div class="container"><h1>Dashboard</h1><p>Operational overview for demo and development.</p></div></section>
+<section class="section-band"><div class="container">
+  <div class="row g-3">
+    <div class="col-md-4"><div class="stat-card"><span>{{ bookings_count }}</span><small>Total bookings</small></div></div>
+    <div class="col-md-4"><div class="stat-card"><span>{{ providers_count }}</span><small>Total providers</small></div></div>
+    <div class="col-md-4"><div class="stat-card"><span>{{ verified_count }}</span><small>Verified providers</small></div></div>
+  </div>
+  <canvas id="bookingChart" class="mt-4"></canvas>
+</div></section>
+{% endblock %}
