@@ -32,6 +32,12 @@
             </li>
             <li class="nav-item"><a class="nav-link" href="{% url 'accounts:profile' %}">Profile</a></li>
             <li class="nav-item"><a class="btn btn-primary btn-sm" href="{% url 'dashboard:home' %}">Dashboard</a></li>
+            <li class="nav-item">
+              <form method="post" action="{% url 'accounts:logout' %}" class="d-inline">
+                {% csrf_token %}
+                <button class="btn btn-outline-danger btn-sm">Logout</button>
+              </form>
+            </li>
           {% else %}
             <li class="nav-item"><a class="nav-link" href="{% url 'accounts:login' %}">Login</a></li>
             <li class="nav-item"><a class="btn btn-primary btn-sm" href="{% url 'accounts:register' %}">Join</a></li>
