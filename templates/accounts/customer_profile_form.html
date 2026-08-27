@@ -1,18 +1,50 @@
 {% extends 'base.html' %}
 {% block title %}My Profile | Servora{% endblock %}
 {% block content %}
-<section class="page-header"><div class="container"><h1>My Profile</h1><p>Keep your contact and service location details updated.</p></div></section>
+<section class="page-header">
+  <div class="container">
+    <h1>My Profile</h1>
+    <p>Keep your contact, photo, and service location details updated.</p>
+  </div>
+</section>
 <section class="section-band">
   <div class="container">
-    <div class="profile-shell">
-      <form method="post">
-        {% csrf_token %}
-        <h2>Account Details</h2>
-        {{ user_form.as_p }}
-        <h2 class="mt-4">Customer Details</h2>
-        {{ role_form.as_p }}
-        <button class="btn btn-primary">Save Profile</button>
-      </form>
+    <div class="row g-4 align-items-start">
+      <div class="col-lg-4">
+        <div class="profile-summary-card">
+          <div class="profile-avatar">
+            {% if role_form.instance.profile_photo %}
+              <img src="{{ role_form.instance.profile_photo.url }}" alt="{{ user.get_full_name|default:user.username }}">
+            {% else %}
+              <span>{{ user.username|first|upper }}</span>
+            {% endif %}
+          </div>
+          <h2>{{ user.get_full_name|default:user.username }}</h2>
+          <p class="text-muted mb-1">Customer Account</p>
+          <p class="small mb-0">{{ role_form.instance.city|default:"Location not added" }}</p>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="profile-shell">
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-section">
+              <h2>Account Details</h2>
+              <p class="text-muted">Name, email, and phone used for booking communication.</p>
+              {{ user_form.as_p }}
+            </div>
+            <div class="form-section">
+              <h2>Customer Details</h2>
+              <p class="text-muted">Upload a profile photo when needed and keep your address ready for bookings.</p>
+              {{ role_form.as_p }}
+            </div>
+            <div class="d-flex gap-2 flex-wrap">
+              <button class="btn btn-primary">Save Profile</button>
+              <a class="btn btn-outline-secondary" href="{% url 'dashboard:home' %}">Back to Dashboard</a>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 </section>

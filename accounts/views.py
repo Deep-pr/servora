@@ -61,7 +61,7 @@ def profile(request):
         template = 'accounts/provider_profile_form.html'
     else:
         customer_profile, _ = CustomerProfile.objects.get_or_create(user=request.user)
-        role_form = CustomerProfileForm(request.POST or None, instance=customer_profile)
+        role_form = CustomerProfileForm(request.POST or None, request.FILES or None, instance=customer_profile)
         template = 'accounts/customer_profile_form.html'
 
     if request.method == 'POST' and user_form.is_valid() and role_form.is_valid():

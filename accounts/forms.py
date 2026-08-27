@@ -76,7 +76,7 @@ class UserProfileForm(forms.ModelForm):
 class CustomerProfileForm(forms.ModelForm):
     class Meta:
         model = CustomerProfile
-        fields = ('city', 'address', 'latitude', 'longitude')
+        fields = ('profile_photo', 'city', 'address', 'latitude', 'longitude')
 
 
 class ProviderProfileForm(forms.ModelForm):
