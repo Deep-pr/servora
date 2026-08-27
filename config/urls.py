@@ -16,6 +16,10 @@ urlpatterns = [
     path('services/', include('services.urls')),
     path('providers/', include('providers.urls')),
     path('bookings/', include('bookings.urls')),
+    path('reviews/', include('reviews.urls')),
+    path('complaints/', include('complaints.urls')),
+    path('notifications/', include('notifications.urls')),
+    path('messages/', include('messaging.urls')),
     path('accounts/', include('accounts.urls')),
     path('admin/', admin.site.urls),
 ]

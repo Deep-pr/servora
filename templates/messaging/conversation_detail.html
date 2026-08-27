@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Conversation | Servora{% endblock %}
+{% block content %}
+<section class="page-header"><div class="container"><h1>Conversation #{{ conversation.pk }}</h1><p>Messages are stored with timestamps and sender details.</p></div></section>
+<section class="section-band"><div class="container"><div class="message-shell">
+  <div class="message-history">
+    {% for message in conversation.messages.all %}
+      <div class="message-bubble {% if message.sender == user %}mine{% endif %}"><strong>{{ message.sender.username }}</strong><p>{{ message.body }}</p>{% if message.image %}<a href="{{ message.image.url }}">View attachment</a>{% endif %}<small>{{ message.created_at|date:"M d, Y h:i A" }}</small></div>
+    {% empty %}
+      <div class="empty-state">No messages yet.</div>
+    {% endfor %}
+  </div>
+  <form method="post" enctype="multipart/form-data" class="mt-4">{% csrf_token %}{{ form.as_p }}<button class="btn btn-primary">Send</button></form>
+</div></div></section>
+{% endblock %}

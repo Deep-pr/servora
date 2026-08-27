@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block title %}Write Review | Servora{% endblock %}
+{% block content %}
+<section class="page-header"><div class="container"><h1>Write Review</h1><p>{{ booking.provider.business_name }} · {{ booking.provider_service.title }}</p></div></section>
+<section class="section-band"><div class="container"><div class="profile-shell"><form method="post">{% csrf_token %}{{ form.as_p }}<button class="btn btn-primary">Submit Review</button> <a class="btn btn-outline-secondary" href="{% url 'bookings:detail' booking.pk %}">Cancel</a></form></div></div></section>
+{% endblock %}

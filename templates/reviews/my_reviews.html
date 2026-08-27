@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}My Reviews | Servora{% endblock %}
+{% block content %}
+<section class="page-header"><div class="container"><h1>My Reviews</h1><p>Completed booking feedback and provider responses.</p></div></section>
+<section class="section-band"><div class="container"><div class="row g-4">
+{% for review in reviews %}
+  <div class="col-md-6"><div class="provider-card"><div class="d-flex justify-content-between"><h5>{{ review.provider.business_name }}</h5><span class="badge text-bg-warning">{{ review.overall_rating }}/5</span></div><p>{{ review.comment }}</p>{% if review.provider_response %}<p class="text-muted small">Provider response: {{ review.provider_response }}</p>{% endif %}</div></div>
+{% empty %}
+  <div class="empty-state">No reviews yet.</div>
+{% endfor %}
+</div></div></section>
+{% endblock %}

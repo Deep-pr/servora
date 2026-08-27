@@ -52,6 +52,16 @@ Part 5 includes:
 - Demo bookings and quotes in seed data
 - Tests for booking creation, status updates, and quote acceptance
 
+Part 6 includes:
+- Customer reviews for completed bookings
+- Provider rating recalculation after reviews
+- Favorite provider save/remove workflow
+- Complaint submission and complaint tracking pages
+- In-app notifications with unread counter and mark-all-read action
+- Basic customer-provider conversations and message history
+- Notifications triggered by bookings, quotes, reviews, complaints, and messages
+- Tests for reviews, favorites, complaints, notifications, and messaging
+
 ## Tech Stack
 
 - Python
@@ -148,6 +158,6 @@ Part 4: Advanced provider search with filters, pagination, and map markers. Comp
 
 Part 5: Booking lifecycle and quote workflow. Complete.
 
-Part 6: Reviews, favorites, complaints, notifications, and messaging.
+Part 6: Reviews, favorites, complaints, notifications, and messaging. Complete.
 
 Part 7: Admin analytics, charts, audit logs, security hardening, tests, and deployment notes.

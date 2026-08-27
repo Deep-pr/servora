@@ -23,6 +23,13 @@
           <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
           <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
           {% if user.is_authenticated %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'messaging:list' %}">Messages</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'notifications:list' %}">
+                Notifications
+                {% if unread_notifications_count %}<span class="badge text-bg-danger">{{ unread_notifications_count }}</span>{% endif %}
+              </a>
+            </li>
             <li class="nav-item"><a class="nav-link" href="{% url 'accounts:profile' %}">Profile</a></li>
             <li class="nav-item"><a class="btn btn-primary btn-sm" href="{% url 'dashboard:home' %}">Dashboard</a></li>
           {% else %}

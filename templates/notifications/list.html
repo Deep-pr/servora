@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Notifications | Servora{% endblock %}
+{% block content %}
+<section class="page-header"><div class="container d-flex justify-content-between align-items-end gap-3 flex-wrap"><div><h1>Notifications</h1><p>Booking, quote, review, complaint, and message updates.</p></div><form method="post" action="{% url 'notifications:mark_all_read' %}">{% csrf_token %}<button class="btn btn-warning">Mark All Read</button></form></div></section>
+<section class="section-band"><div class="container"><div class="notification-list">
+{% for notification in notifications %}
+  <a class="notification-item {% if not notification.is_read %}unread{% endif %}" href="{{ notification.link|default:'#' }}"><strong>{{ notification.title }}</strong><span>{{ notification.message }}</span><small>{{ notification.created_at|date:"M d, Y h:i A" }}</small></a>
+{% empty %}
+  <div class="empty-state">No notifications yet.</div>
+{% endfor %}
+</div></div></section>
+{% endblock %}

@@ -47,9 +47,13 @@
     {% if user == booking.customer %}
       <div class="provider-card">
         <h2>Customer Actions</h2>
+        {% if booking.status == 'completed' %}
+          <a class="btn btn-success mb-2" href="{% url 'reviews:create' booking.pk %}">Write Review</a>
+        {% endif %}
         {% if can_cancel %}
           <form method="post" action="{% url 'bookings:cancel' booking.pk %}">{% csrf_token %}<button class="btn btn-outline-danger">Cancel Booking</button></form>
         {% endif %}
+        <a class="btn btn-outline-primary mt-2" href="{% url 'complaints:create' %}">Submit Complaint</a>
       </div>
     {% endif %}
 

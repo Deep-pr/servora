@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Messages | Servora{% endblock %}
+{% block content %}
+<section class="page-header"><div class="container"><h1>Messages</h1><p>Customer-provider conversations.</p></div></section>
+<section class="section-band"><div class="container"><div class="notification-list">
+{% for conversation in conversations %}
+  <a class="notification-item" href="{% url 'messaging:detail' conversation.pk %}"><strong>Conversation #{{ conversation.pk }}</strong><span>{% for participant in conversation.participants.all %}{% if participant != user %}{{ participant.username }}{% endif %}{% endfor %}</span><small>{{ conversation.updated_at|date:"M d, Y h:i A" }}</small></a>
+{% empty %}
+  <div class="empty-state">No conversations yet. Open a provider profile and start a chat.</div>
+{% endfor %}
+</div></div></section>
+{% endblock %}

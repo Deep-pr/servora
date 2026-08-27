@@ -4,6 +4,7 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect, render
 
 from accounts.models import User
+from notifications.models import Notification
 from providers.models import ProviderProfile
 from .forms import BookingForm, QuoteForm
 from .models import Booking, Quote
@@ -33,6 +34,12 @@ def booking_create(request, provider_id):
         booking.status = Booking.PENDING
         booking.estimated_amount = booking.provider_service.starting_price
         booking.save()
+        Notification.objects.create(
+            user=provider.user,
+            title='New booking request',
+            message=f'{request.user.username} requested {booking.provider_service.title}.',
+            link=f'/bookings/{booking.pk}/',
+        )
         messages.success(request, 'Booking request sent to provider.')
         return redirect('bookings:detail', pk=booking.pk)
     return render(request, 'bookings/booking_form.html', {'form': form, 'provider': provider})
@@ -71,6 +78,12 @@ def booking_cancel(request, pk):
     if request.method == 'POST':
         booking.status = Booking.CANCELLED
         booking.save(update_fields=['status', 'updated_at'])
+        Notification.objects.create(
+            user=booking.provider.user,
+            title='Booking cancelled',
+            message=f'{request.user.username} cancelled {booking.provider_service.title}.',
+            link=f'/bookings/{booking.pk}/',
+        )
         messages.success(request, 'Booking cancelled.')
     return redirect('bookings:detail', pk=booking.pk)
 
@@ -94,6 +107,12 @@ def provider_update_status(request, pk, status):
     if request.method == 'POST':
         booking.status = status
         booking.save(update_fields=['status', 'updated_at'])
+        Notification.objects.create(
+            user=booking.customer,
+            title='Booking status updated',
+            message=f'{booking.provider.business_name} marked your booking as {booking.get_status_display()}.',
+            link=f'/bookings/{booking.pk}/',
+        )
         messages.success(request, f'Booking marked as {booking.get_status_display()}.')
     return redirect('bookings:detail', pk=booking.pk)
 
@@ -110,6 +129,12 @@ def quote_create(request, booking_id):
         quote.save()
         booking.estimated_amount = quote.estimated_price
         booking.save(update_fields=['estimated_amount', 'updated_at'])
+        Notification.objects.create(
+            user=booking.customer,
+            title='Quote received',
+            message=f'{provider.business_name} sent a quote for {booking.provider_service.title}.',
+            link=f'/bookings/{booking.pk}/',
+        )
         messages.success(request, 'Quote sent to customer.')
     return redirect('bookings:detail', pk=booking.pk)
 
@@ -126,6 +151,12 @@ def quote_decision(request, pk, status):
             quote.booking.status = Booking.CONFIRMED
             quote.booking.estimated_amount = quote.estimated_price
             quote.booking.save(update_fields=['status', 'estimated_amount', 'updated_at'])
+        Notification.objects.create(
+            user=quote.provider.user,
+            title='Quote decision',
+            message=f'{request.user.username} {quote.get_status_display().lower()} your quote.',
+            link=f'/bookings/{quote.booking.pk}/',
+        )
         messages.success(request, f'Quote {quote.get_status_display().lower()}.')
     return redirect('bookings:detail', pk=quote.booking.pk)
 

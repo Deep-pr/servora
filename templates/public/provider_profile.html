@@ -8,8 +8,8 @@
       <div class="d-flex gap-2 flex-wrap">
         <a class="btn btn-warning" href="{% url 'bookings:create' provider.pk %}">Book Now</a>
         <a class="btn btn-light" href="{% url 'bookings:create' provider.pk %}">Request Quote</a>
-        <button class="btn btn-outline-light">Chat</button>
-        <button class="btn btn-outline-light">Save</button>
+        <a class="btn btn-outline-light" href="{% url 'messaging:start_provider' provider.pk %}">Chat</a>
+        <form method="post" action="{% url 'reviews:favorite_toggle' provider.pk %}">{% csrf_token %}<button class="btn btn-outline-light">Save</button></form>
       </div>
     </div>
   </div>
